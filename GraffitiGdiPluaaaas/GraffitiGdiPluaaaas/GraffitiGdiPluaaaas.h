@@ -13,9 +13,7 @@
 
 // CGraffitiGdiPluaaaasApp:
 // 有关此类的实现，请参阅 GraffitiGdiPluaaaas.cpp
-//添加gdi头文件：
-#include<gdiplus.h>
-using namespace Gdiplus;
+
 
 /*Status GdiplusStarup	//gdi启动函数//不用自己写。。。。。。
 (

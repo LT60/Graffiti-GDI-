@@ -11,3 +11,7 @@
 #include "framework.h"
 
 #endif //PCH_H
+
+//添加gdi头文件：
+#include<gdiplus.h>
+using namespace Gdiplus;
