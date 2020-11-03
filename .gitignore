@@ -50,6 +50,7 @@ GraffitiGdiPluaaaas/GraffitiGdiPluaaaas/Debug/GraffitiGdiPluaaaas.log
 GraffitiGdiPluaaaas/GraffitiGdiPluaaaas/Debug/GraffitiGdiPluaaaas.res
 GraffitiGdiPluaaaas/GraffitiGdiPluaaaas/Debug/vc142.idb
 GraffitiGdiPluaaaas/GraffitiGdiPluaaaas/Debug/vc142.pdb
-GraffitiGdiPluaaaas/.vs/GraffitiGdiPluaaaas/v16/Browse.VC.db-shm
-GraffitiGdiPluaaaas/.vs/GraffitiGdiPluaaaas/v16/Browse.VC.db-wal
-GraffitiGdiPluaaaas/.vs/GraffitiGdiPluaaaas/v16/Browse.VC.opendb
+GraffitiGdiPluaaaas/.vs
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json

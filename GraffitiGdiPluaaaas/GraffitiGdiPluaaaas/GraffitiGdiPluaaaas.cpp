@@ -50,7 +50,8 @@ BOOL CGraffitiGdiPluaaaasApp::InitInstance()
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
 
-	CWinApp::InitInstance();
+	GdiplusStartup(&GdiToken, &GdiInput, NULL);
+	CWinApp::InitInstance();//ppt叫找到这一个东东在它之前加入另一个东东
 
 
 	AfxEnableControlContainer();
@@ -105,3 +106,12 @@ BOOL CGraffitiGdiPluaaaasApp::InitInstance()
 	return FALSE;
 }
 
+
+
+// 照抄的函数（gdip准备工作）
+int CGraffitiGdiPluaaaasApp::ExitInstance()
+{
+	// TODO: 在此处添加实现代码.
+	GdiplusShutdown(GdiToken);
+	return CWinApp::ExitInstance();
+}
