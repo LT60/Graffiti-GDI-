@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CGraffitiGdiPluaaaasDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_COMMAND(ID_LINE, &CGraffitiGdiPluaaaasDlg::OnLine)
 END_MESSAGE_MAP()
 
 
@@ -100,6 +101,23 @@ BOOL CGraffitiGdiPluaaaasDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	CRect rect;//定义一个区域
+	picDC = GetDlgItem(IDC_STATIC_PIC)->GetDC();//返回设备：类CDC*//绑定
+	GetDlgItem(IDC_STATIC_PIC)->GetClientRect(&rect);
+	//将控件绑定到区域。以后可以直接调用这个区域
+	picClient_W = rect.Width();
+	picClient_H = rect.Height();
+	CenterX = rect.CenterPoint().x;
+	CenterY = rect.CenterPoint().y;
+	//创建共用图形对象
+	//graph = new Graphics(picDC->m_hDC);//debug下，用debug new取代了new
+	graph = Graphics::FromHDC(picDC->m_hDC);//同上（冒号版本）
+	int ColorVal = GetSysColor(COLOR_BTNFACE);
+	char red = GetRValue(ColorVal);
+	char green = GetGValue(ColorVal);
+	BYTE blue = GetBValue(ColorVal);
+	int alpha = 255;//不透明
+	BkColor = Color(alpha, red, green, blue);//不透明：可以缺省
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -153,3 +171,17 @@ HCURSOR CGraffitiGdiPluaaaasDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CGraffitiGdiPluaaaasDlg::OnLine()
+{
+	// TODO: 在此添加命令处理程序代码
+	//Invalidate();//窗口客户区无效
+	//UpdateWindow();//立即重回窗口
+	graph->Clear(BkColor);//GDI+新整的函数，取代上面两行
+	int alpha = 255;
+	Pen myPen(Color(alpha, 255, 0, 0), 3);//红笔，宽3
+	Point P1(100, 150);//坐标原点：左上角
+	Point P2(300, 50);
+	graph->DrawLine(&myPen, P1, P2);
+}
