@@ -14,4 +14,5 @@
 
 //添加gdi头文件：
 #include<gdiplus.h>
+#include<gdipluscolor.h>
 using namespace Gdiplus;
