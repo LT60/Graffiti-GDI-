@@ -48,4 +48,5 @@ protected:
 
 public:
 	afx_msg void OnLine();
+	afx_msg void OnLines();
 };

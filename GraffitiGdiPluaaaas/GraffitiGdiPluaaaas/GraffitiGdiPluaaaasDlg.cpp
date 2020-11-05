@@ -66,6 +66,7 @@ BEGIN_MESSAGE_MAP(CGraffitiGdiPluaaaasDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_COMMAND(ID_LINE, &CGraffitiGdiPluaaaasDlg::OnLine)
+	ON_COMMAND(ID_LINES, &CGraffitiGdiPluaaaasDlg::OnLines)
 END_MESSAGE_MAP()
 
 
@@ -110,8 +111,8 @@ BOOL CGraffitiGdiPluaaaasDlg::OnInitDialog()
 	CenterX = rect.CenterPoint().x;
 	CenterY = rect.CenterPoint().y;
 	//创建共用图形对象
-	//graph = new Graphics(picDC->m_hDC);//debug下，用debug new取代了new
-	graph = Graphics::FromHDC(picDC->m_hDC);//同上（冒号版本）
+	//graph =::new Graphics(picDC->m_hDC);//debug下，用debug new取代了new
+	graph = Graphics::FromHDC(picDC->m_hDC);//同上
 	int ColorVal = GetSysColor(COLOR_BTNFACE);
 	char red = GetRValue(ColorVal);
 	char green = GetGValue(ColorVal);
@@ -184,4 +185,15 @@ void CGraffitiGdiPluaaaasDlg::OnLine()
 	Point P1(100, 150);//坐标原点：左上角
 	Point P2(300, 50);
 	graph->DrawLine(&myPen, P1, P2);
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnLines()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	Pen myPen(Color(0, 0, 255), 2);
+	Point point[4] = {	Point(30,230),Point(150,200),
+						Point(200,40),Point(350,70) };
+	graph->DrawLines(&myPen, point, 4);//点数组	
 }
