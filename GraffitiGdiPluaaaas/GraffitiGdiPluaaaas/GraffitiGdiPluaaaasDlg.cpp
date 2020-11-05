@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(CGraffitiGdiPluaaaasDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_COMMAND(ID_LINE, &CGraffitiGdiPluaaaasDlg::OnLine)
 	ON_COMMAND(ID_LINES, &CGraffitiGdiPluaaaasDlg::OnLines)
+	ON_COMMAND(ID_CRUVE, &CGraffitiGdiPluaaaasDlg::OnCruve)
 END_MESSAGE_MAP()
 
 
@@ -196,4 +197,22 @@ void CGraffitiGdiPluaaaasDlg::OnLines()
 	Point point[4] = {	Point(30,230),Point(150,200),
 						Point(200,40),Point(350,70) };
 	graph->DrawLines(&myPen, point, 4);//点数组	
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnCruve()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(Color::White);
+	Pen bluePen(Color::Blue, 2);//use the defaut colors
+	bluePen.SetDashStyle(DashStyleDash);//??
+	Pen redPen(Color::Red, 2);
+	redPen.SetDashStyle(DashStyleDot);//点线
+	Pen BlackPen(Color::Black);
+	Point point1(30, 230); Point point2(150, 200);
+	Point point3(200, 40); Point point4(350, 70);
+	Point Points[4] = { point1,point2,point3,point4 };
+	graph->DrawCurve(&bluePen, Points, 4, 0.0);//0:直线（张力）
+	graph->DrawCurve(&redPen, Points, 4, 0.5);//0.5:缺省值
+	graph->DrawCurve(&BlackPen, Points, 4, 1);//1:最弯
 }
