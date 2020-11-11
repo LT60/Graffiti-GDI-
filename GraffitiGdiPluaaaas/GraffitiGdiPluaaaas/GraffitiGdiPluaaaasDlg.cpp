@@ -174,32 +174,33 @@ HCURSOR CGraffitiGdiPluaaaasDlg::OnQueryDragIcon()
 }
 
 
-
+//画直线
 void CGraffitiGdiPluaaaasDlg::OnLine()
 {
 	// TODO: 在此添加命令处理程序代码
-	//Invalidate();//窗口客户区无效
-	//UpdateWindow();//立即重回窗口
-	graph->Clear(BkColor);//GDI+新整的函数，取代上面两行
+	//Invalidate();			//窗口客户区无效？？？？？？？什么意思
+	//UpdateWindow();		//更新客户区窗口
+	graph->Clear(BkColor);	//GDI+新整的函数，取代上面两行
 	int alpha = 255;
-	Pen myPen(Color(alpha, 255, 0, 0), 3);//红笔，宽3
-	Point P1(100, 150);//坐标原点：左上角
+	Pen myPen(Color(alpha, 255, 0, 0), 3);	//红笔，宽3
+	Point P1(100, 150);	//坐标原点：左上角
 	Point P2(300, 50);
 	graph->DrawLine(&myPen, P1, P2);
 }
 
-
+//画折线
 void CGraffitiGdiPluaaaasDlg::OnLines()
 {
 	// TODO: 在此添加命令处理程序代码
-	graph->Clear(BkColor);
-	Pen myPen(Color(0, 0, 255), 2);
-	Point point[4] = {	Point(30,230),Point(150,200),
+	graph->Clear(BkColor);								//清除区域
+	Pen myPen(Color(0, 0, 255), 2);						//设置两个宽度的蓝钢笔
+	Point point[4] = {	Point(30,230),Point(150,200),	//设置点数组
 						Point(200,40),Point(350,70) };
-	graph->DrawLines(&myPen, point, 4);//点数组	
+	graph->DrawLines(&myPen, point, 4);
+	//调用区域的画折线行数，传入pen地址，以及点地址，以及点的个数		
 }
 
-
+//画曲线
 void CGraffitiGdiPluaaaasDlg::OnCruve()
 {
 	// TODO: 在此添加命令处理程序代码
