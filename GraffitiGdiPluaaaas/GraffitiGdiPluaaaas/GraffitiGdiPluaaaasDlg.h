@@ -50,4 +50,10 @@ public:
 	afx_msg void OnLine();
 	afx_msg void OnLines();
 	afx_msg void OnCruve();
+	afx_msg void OnClosedcruve();
+	afx_msg void OnRectangle();
+	afx_msg void OnEllipse();
+	afx_msg void OnArc();
+	afx_msg void OnPie();
+	afx_msg void OnPolygon();
 };

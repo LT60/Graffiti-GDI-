@@ -68,6 +68,12 @@ BEGIN_MESSAGE_MAP(CGraffitiGdiPluaaaasDlg, CDialogEx)
 	ON_COMMAND(ID_LINE, &CGraffitiGdiPluaaaasDlg::OnLine)
 	ON_COMMAND(ID_LINES, &CGraffitiGdiPluaaaasDlg::OnLines)
 	ON_COMMAND(ID_CRUVE, &CGraffitiGdiPluaaaasDlg::OnCruve)
+	ON_COMMAND(ID_CLOSEDCRUVE, &CGraffitiGdiPluaaaasDlg::OnClosedcruve)
+	ON_COMMAND(ID_RECTANGLE, &CGraffitiGdiPluaaaasDlg::OnRectangle)
+	ON_COMMAND(ID_ELLIPSE, &CGraffitiGdiPluaaaasDlg::OnEllipse)
+	ON_COMMAND(ID_ARC, &CGraffitiGdiPluaaaasDlg::OnArc)
+	ON_COMMAND(ID_PIE, &CGraffitiGdiPluaaaasDlg::OnPie)
+	ON_COMMAND(ID_POLYGON, &CGraffitiGdiPluaaaasDlg::OnPolygon)
 END_MESSAGE_MAP()
 
 
@@ -178,7 +184,7 @@ HCURSOR CGraffitiGdiPluaaaasDlg::OnQueryDragIcon()
 void CGraffitiGdiPluaaaasDlg::OnLine()
 {
 	// TODO: 在此添加命令处理程序代码
-	//Invalidate();			//窗口客户区无效？？？？？？？什么意思
+	//Invalidate();			//窗口客户区无效//为了刷新
 	//UpdateWindow();		//更新客户区窗口
 	graph->Clear(BkColor);	//GDI+新整的函数，取代上面两行
 	int alpha = 255;
@@ -206,7 +212,7 @@ void CGraffitiGdiPluaaaasDlg::OnCruve()
 	// TODO: 在此添加命令处理程序代码
 	graph->Clear(Color::White);
 	Pen bluePen(Color::Blue, 2);//use the defaut colors
-	bluePen.SetDashStyle(DashStyleDash);//??
+	bluePen.SetDashStyle(DashStyleDash);//虚线
 	Pen redPen(Color::Red, 2);
 	redPen.SetDashStyle(DashStyleDot);//点线
 	Pen BlackPen(Color::Black);
@@ -216,4 +222,85 @@ void CGraffitiGdiPluaaaasDlg::OnCruve()
 	graph->DrawCurve(&bluePen, Points, 4, 0.0);//0:直线（张力）
 	graph->DrawCurve(&redPen, Points, 4, 0.5);//0.5:缺省值
 	graph->DrawCurve(&BlackPen, Points, 4, 1);//1:最弯
+}
+
+//笛卡尔曲线
+void CGraffitiGdiPluaaaasDlg::OnClosedcruve()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(Color::White);//用白色清除客户区
+	Point point1(30, 230);
+	Point point2(150, 200);
+	Point point3(200, 40);
+	Point point4(350, 70);
+	Point Points[4] = { point1,point2,point3,point4 };
+	Pen redPen(Color::Red, 2);//选择画笔
+	graph->DrawClosedCurve(&redPen, Points, 4, 0.5);//最后一个参数：张力
+	
+}
+
+//矩形
+void CGraffitiGdiPluaaaasDlg::OnRectangle()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	Pen myPen(Color::Magenta, 2);	//品红
+	Rect rect(70, 40, 250, 120);	//x,y位置；with，high大小
+	graph->DrawRectangle(&myPen, rect);
+}
+
+//椭圆
+void CGraffitiGdiPluaaaasDlg::OnEllipse()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(Color::White);		//重绘
+	Pen myPen(Color::Magenta, 2);
+	Rect rect(70, 40, 250, 120);	//外接矩形
+	graph->DrawEllipse(&myPen, rect);//画椭圆
+	Pen myPen2(Color::DarkMagenta, 1);//定义暗品红（pen2）
+	myPen2.SetDashStyle(DashStyleDash);//虚线（pen2）
+	graph->DrawRectangle(&myPen2, rect);//画矩形
+}
+
+//弧
+void CGraffitiGdiPluaaaasDlg::OnArc()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	Pen myPen(Color::Magenta, 2);	//品红
+	Rect rect(50, 50, 250, 150);	//弧的外接矩形
+	float startAngle = -30;	//弧的开始∠角度
+	float sweepAngle = 270;	//弧的扫掠角度
+	//角度的单位是度，而非弧度。零度为x轴正方向，顺时针为正方向
+	graph->DrawArc(&myPen, rect, startAngle, sweepAngle);	//绘制弧
+}
+
+//饼图
+void CGraffitiGdiPluaaaasDlg::OnPie()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph -> Clear(BkColor);
+	Rect rect(50, 50, 250, 150);
+	float startAngle = -30;	//开始角
+	float sweepAngle = 270;	//扫掠角
+	Pen myPen(Color::Magenta, 2);//品红
+	graph->DrawPie(&myPen, rect, startAngle, sweepAngle);//画饼图
+}
+
+//多边形（封闭）
+void CGraffitiGdiPluaaaasDlg::OnPolygon()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(Color::White);
+	Point point1(200, 0);
+	Point point2(295, 69);
+	Point point3(259, 181);
+	Point point4(141, 181);
+	Point point5(105, 69);
+	Point points1[5] = { point1 ,point2,point3,point4,point5 };
+	Point points2[5] = { point1 ,point3 ,point5 ,point2 ,point4 };
+	Pen myPen1(Color::Magenta, 2);
+	graph->DrawPolygon(&myPen1, points1, 5);//画五边形
+	Pen myPen2(Color::Green, 1);
+	graph->DrawPolygon(&myPen2, points2, 5);//五角星
 }
