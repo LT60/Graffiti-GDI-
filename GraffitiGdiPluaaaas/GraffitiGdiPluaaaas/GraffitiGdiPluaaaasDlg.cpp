@@ -74,6 +74,18 @@ BEGIN_MESSAGE_MAP(CGraffitiGdiPluaaaasDlg, CDialogEx)
 	ON_COMMAND(ID_ARC, &CGraffitiGdiPluaaaasDlg::OnArc)
 	ON_COMMAND(ID_PIE, &CGraffitiGdiPluaaaasDlg::OnPie)
 	ON_COMMAND(ID_POLYGON, &CGraffitiGdiPluaaaasDlg::OnPolygon)
+	ON_COMMAND(ID_FILL_RECTANGLE, &CGraffitiGdiPluaaaasDlg::OnFillRectangle)
+	ON_COMMAND(ID_FILL_ELLIPSE, &CGraffitiGdiPluaaaasDlg::OnFillEllipse)
+	ON_COMMAND(ID_FILL_POLYGON, &CGraffitiGdiPluaaaasDlg::OnFillPolygon)
+	ON_COMMAND(ID_MULTIDRAWLINE, &CGraffitiGdiPluaaaasDlg::OnMultidrawline)
+	ON_COMMAND(ID_DRAW_STRING, &CGraffitiGdiPluaaaasDlg::OnDrawString)
+	ON_COMMAND(ID_HATCH_BRUSH, &CGraffitiGdiPluaaaasDlg::OnHatchBrush)
+	ON_COMMAND(ID_TEXTURE_BRUSH, &CGraffitiGdiPluaaaasDlg::OnTextureBrush)
+	ON_COMMAND(ID_LINER_GRADIENT_BRUSH, &CGraffitiGdiPluaaaasDlg::OnLinerGradientBrush)
+	ON_COMMAND(ID_TUANSLATE_TRANSFORM, &CGraffitiGdiPluaaaasDlg::OnTuanslateTransform)
+	ON_COMMAND(ID_ROTATE_TRANSFORM, &CGraffitiGdiPluaaaasDlg::OnRotateTransform)
+	ON_COMMAND(ID_SCALE_TRANSFORM_1, &CGraffitiGdiPluaaaasDlg::OnScaleTransform1)
+	ON_COMMAND(ID_SCALE_TRANSFORM, &CGraffitiGdiPluaaaasDlg::OnScaleTransform)
 END_MESSAGE_MAP()
 
 
@@ -303,4 +315,243 @@ void CGraffitiGdiPluaaaasDlg::OnPolygon()
 	graph->DrawPolygon(&myPen1, points1, 5);//画五边形
 	Pen myPen2(Color::Green, 1);
 	graph->DrawPolygon(&myPen2, points2, 5);//五角星
+}
+
+//填充矩形
+void CGraffitiGdiPluaaaasDlg::OnFillRectangle()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	SolidBrush myBrush(Color::LightGreen);//单色
+	Rect rect(70, 40, 250, 120);
+	graph->FillRectangle(&myBrush, rect);
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnFillEllipse()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	Color fgColor = Color::Red;					//画刷前景色
+	Color bkColor = Color::Yellow;				//画刷背景色
+	HatchStyle Style = HatchStyleDivot;			//图案样式
+	HatchBrush myBrush(Style, fgColor, bkColor);//图案画刷
+	Rect rect(70, 40, 250, 120);				//外接矩形
+	graph->FillEllipse(&myBrush, rect);
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnFillPolygon()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	CString filename = TEXT("红楼.png");	//缺省路径：当前目录
+	Image img(filename);					//缺省图像
+	WrapMode Mode = WrapModeTile;			//缺省：平铺（枚举常量）
+	TextureBrush myBrush(&img/*,Mode*/);	//图像画刷
+	Point points[8] =						//???
+	{
+		Point(picClient_W * 4 / 5,0),
+		Point(picClient_W * 1 / 5,0),
+		Point(0,picClient_H * 1 / 4),
+		Point(0,picClient_H * 3 / 4),
+		Point(picClient_W * 1 / 5, picClient_H),
+		Point(picClient_W * 4 / 5,picClient_H),
+		Point(picClient_W, picClient_H * 3 / 4),
+		Point(picClient_W, picClient_H * 1 / 4)
+	};
+	graph->FillPolygon(&myBrush, points, 8);//纹理（画刷）填充多边形（平铺）
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnMultidrawline()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	Pen bluePen(Color(255, 0, 0, 255));//蓝笔
+	Pen redPen(Color(255, 255, 0, 0));//红笔
+	int x, y, alpha;//透明水平渐变，填满客户区
+	for (x = 0,alpha=0; x < picClient_W; x++)//绿色线条背景
+	{
+		if (x % 3 == 0)alpha++;//隔行：picClient_H>255
+		Pen pen(Color(alpha, 0, 255, 0));
+		graph->DrawLine(&pen, x, 0, x, picClient_H);
+	}
+	for (x = 0, y = picClient_H; x < picClient_W; x += 10, y -= 7)
+		//绘蓝线：从下向上、从左向右
+	{
+		graph->DrawLine(&bluePen, 0, y, x, 0);
+	}
+	for (x = 0, y = picClient_H; x < picClient_W; x += 5, y -= 5)
+	{
+		graph->DrawLine(&redPen, picClient_W, y, x, picClient_H);
+	}
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnDrawString()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor); 
+	Pen myPen(Color::Black, 1);
+	RectF rect(70, 40, 280, 120);//裁剪矩形∶绘制文字范围
+	graph->DrawRectangle(&myPen, rect);//画矩形框
+	//-----------------—--设置字体与对齐
+	CString str("落霞与孤鹜齐飞秋水共长天一色"); 
+	int len = str.GetLength();
+	Gdiplus::Font font(_T("黑体"),18);			//多种字体和风格
+	StringFormat format;//缺省∶左到右水平输出、自动换行
+						//多种格式∶方向、裁剪、换行、对齐等等
+	//StringFormat format(StringFormatFlagsDirectionVertical);
+	StringAlignment hsa=StringAlignmentCenter;	//中心对齐
+	StringAlignment vsa=StringAlignmentCenter;
+	format.SetAlignment(hsa);					//水平对齐∶行文字居中
+	format.SetLineAlignment(vsa);				//垂直对齐∶行居中
+	SolidBrush myBrush(Color::Red);				//实体画刷
+
+	graph->DrawString(str, len, &font, rect, &format, &myBrush);
+}
+
+//图案
+void CGraffitiGdiPluaaaasDlg::OnHatchBrush()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	CString str = L"图案啊";
+	Gdiplus::Font font(L"隶书", 100);
+	HatchBrush Brush1(HatchStyleForwardDiagonal, Color::Yellow, Color::Brown); 
+	graph->DrawString(str, str.GetLength(), &font, PointF(0, 0), &Brush1);
+	HatchBrush Brush2(HatchStyleSmallCheckerBoard, Color::Red, Color::Yellow);
+
+	graph->DrawString(str, str.GetLength(), &font, PointF(0, 130), &Brush2);
+}
+
+//纹理
+void CGraffitiGdiPluaaaasDlg::OnTextureBrush()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	CString str = L"纹理啊";
+	Gdiplus::Font font(L"隶书", 100);
+	CString filename = TEXT("红楼.png");
+	Image img(filename);//项目文件夹里面的图像文件
+	WrapMode Mode = WrapModeTile;	//枚举常量：平铺
+	TextureBrush Brush(&img/*,Mode*/);
+
+	graph->DrawString(str, str.GetLength(), &font, PointF(0, 0), &Brush);
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnLinerGradientBrush()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(BkColor);
+	CString str = L"渐变咯";
+	Gdiplus::Font font(L"仿宋", 70);
+	Point p1(20, 0), p2(picClient_W - 20, 0);//两点y=0
+	Color col1(Color::Red), col2(Color::Yellow);//渐变点颜色
+	LinearGradientBrush myBrush(p1, p2, col1, col2);//p1(red)->p2(yellow)
+	graph->DrawString(str, str.GetLength(), &font, PointF(0, 0), &myBrush);
+	//多点渐变------------------------------------
+	Color cols[8] =
+	{
+		Color::Red,Color::Orange,
+		Color::Yellow,Color::Green,
+		Color::Cyan, Color::Blue,
+		Color::Purple, Color::Magenta
+	};
+	//两点之间颜色值，默认线性插值（可用SetBlend...系列函数改变)
+	REAL bps[8] = { 0.0,0.15,0.3,0.45,0.6,0.75,0.875,1.0 };//渐变点
+		// bps∶混色位置百分比，首尾须为O和1[中间值递增]
+	myBrush.SetInterpolationColors(cols, bps, 8);//绑定渐变点颜色
+	graph->DrawString(str, str.GetLength(), &font, PointF(0, 120), &myBrush);
+
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnTuanslateTransform()
+{
+	// TODO: 在此添加命令处理程序代码
+	//GDI+∶坐标系变换（图形本身大小、位置等不变），后同graph->Clear(ColorWhite);
+	Rect rectSquare(40, 30, 100, 100);//绘制矩形
+	Rect rectCircle(220, 30, 100, 100);//圆的外接矩形绘圆和椭圆
+	Pen BluePen(Color::Blue,2);
+	Pen RedPen(Color::Red, 2);
+	graph->DrawRectangle(&BluePen, rectSquare);
+	graph -> DrawEllipse(&BluePen, rectCircle);
+	//平移坐标系：
+	graph->TranslateTransform(60, 30);//正值︰x右移, y下移
+	//：平移
+	graph->DrawRectangle(&RedPen, rectSquare);
+	graph->DrawEllipse(&RedPen, rectCircle);
+	graph->ResetTransform(); //还原坐标系（以后用)
+	//graph->TranslateTransform(-60, -30);//还原坐标系（以后用)
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnRotateTransform()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(Color::White);
+	SolidBrush Brush(Color::Red);
+	Gdiplus::Font font(L"华文彩云",16); 
+	StringFormat Fmt;
+	Fmt.SetLineAlignment(StringAlignmentCenter);//垂直对齐
+	graph->TranslateTransform(float(CenterX), float(CenterY));//坐标系平移
+	CString str("旋转文本");
+	int len=str.GetLength();
+	PointF LeftTop(10.0, -40.0);//文字左上角，改为(20.0,0.O)测试
+	for(int i=0; i<360; i+=45)
+	{ 
+		graph->RotateTransform(float(i));//旋转坐标系（顺时针为正)
+		graph->DrawString(str, len, &font, LeftTop, &Fmt,&Brush);
+		graph->RotateTransform(float(-i));//还原坐标系 !!!
+		//graph->ResetTransform();
+	}
+	/*for(int i=O; i<9; i++){
+	lgraph->RotateTransform(float(30));//旋转坐标系
+	graph->DrawString(str, len, &font, LeftTop, &Fmt, &Brush);}*/
+	graph->ResetTransform();//坐标系还原
+}
+
+
+void CGraffitiGdiPluaaaasDlg::OnScaleTransform1()
+{
+	// TODO: 在此添加命令处理程序代码
+	graph->Clear(Color::White);
+	Image img(L"红楼.png");
+	int imgW=img.GetWidth();
+	graph->DrawImage(&img, PointF(0,0));
+
+	float ratioX = 0.5;	//x向缩放比例
+	float ratioY = 0.5; // y向缩放比例（测试两者不同的效果)
+	graph->ScaleTransform(ratioX, ratioY);
+
+	graph->DrawImage(&img, PointF(imgW / ratioX + imgW, 0));//???
+	graph->ResetTransform();
+}
+
+
+
+
+void CGraffitiGdiPluaaaasDlg::OnScaleTransform()
+{
+	// TODO: 在此添加命令处理程序代码
+
+	//图片太大了，把坐标系变变
+	float ratioX = 0.5;	//x向缩放比例
+	float ratioY = 0.5; // y向缩放比例
+	graph->ScaleTransform(ratioX, ratioY);
+
+	graph->Clear(Color::White);
+	Image img(L"红楼.png");//项目文件夹里的图像文件
+	int imgW=img.GetWidth();
+	graph->DrawImage(&img, PointF(0, 0));//原图
+	ratioX = -1;//x向缩放比例
+	ratioY = 1; //y向缩放比例
+	//graph->TranslateTransform(imgW * 4, O);//先平移(+)
+	graph->ScaleTransform(ratioX, ratioY);//缩放
+	graph->TranslateTransform(float(-imgW * 3), 0); //后平移(-)//？？？
+	graph->DrawImage(&img, PointF(0,0));//镜像
+	graph->ResetTransform();
 }

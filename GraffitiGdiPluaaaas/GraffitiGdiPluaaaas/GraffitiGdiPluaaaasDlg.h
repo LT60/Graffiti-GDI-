@@ -56,4 +56,16 @@ public:
 	afx_msg void OnArc();
 	afx_msg void OnPie();
 	afx_msg void OnPolygon();
+	afx_msg void OnFillRectangle();
+	afx_msg void OnFillEllipse();
+	afx_msg void OnFillPolygon();
+	afx_msg void OnMultidrawline();
+	afx_msg void OnDrawString();
+	afx_msg void OnHatchBrush();
+	afx_msg void OnTextureBrush();
+	afx_msg void OnLinerGradientBrush();
+	afx_msg void OnTuanslateTransform();
+	afx_msg void OnRotateTransform();
+	afx_msg void OnScaleTransform1();
+	afx_msg void OnScaleTransform();
 };

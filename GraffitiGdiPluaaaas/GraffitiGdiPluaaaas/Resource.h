@@ -46,13 +46,25 @@
 #define ID_32805                        32805
 #define ID_32806                        32806
 #define ID_32807                        32807
+#define ID_FILL_RECTANGLE               32808
+#define ID_FILL_ELLIPSE                 32809
+#define ID_FILL_POLYGON                 32810
+#define ID_MULTIDRAWLINE                32811
+#define ID_DRAW_STRING                  32812
+#define ID_HATCH_BRUSH                  32813
+#define ID_TEXTURE_BRUSH                32814
+#define ID_LINER_GRADIENT_BRUSH         32815
+#define ID_TUANSLATE_TRANSFORM          32816
+#define ID_ROTATE_TRANSFORM             32817
+#define ID_SCALE_TRANSFORM              32818
+#define ID_SCALE_TRANSFORM_1            32819
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        131
-#define _APS_NEXT_COMMAND_VALUE         32808
+#define _APS_NEXT_COMMAND_VALUE         32820
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
