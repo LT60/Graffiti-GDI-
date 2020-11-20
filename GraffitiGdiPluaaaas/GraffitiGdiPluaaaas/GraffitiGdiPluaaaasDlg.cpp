@@ -54,6 +54,8 @@ CGraffitiGdiPluaaaasDlg::CGraffitiGdiPluaaaasDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_GRAFFITIGDIPLUAAAAS_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	
 }
 
 void CGraffitiGdiPluaaaasDlg::DoDataExchange(CDataExchange* pDX)
