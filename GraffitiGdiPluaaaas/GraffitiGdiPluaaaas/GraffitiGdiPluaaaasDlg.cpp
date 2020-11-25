@@ -365,7 +365,7 @@ void CGraffitiGdiPluaaaasDlg::OnFillPolygon()
 	graph->FillPolygon(&myBrush, points, 8);//纹理（画刷）填充多边形（平铺）
 }
 
-
+//叠加
 void CGraffitiGdiPluaaaasDlg::OnMultidrawline()
 {
 	// TODO: 在此添加命令处理程序代码
@@ -421,10 +421,11 @@ void CGraffitiGdiPluaaaasDlg::OnHatchBrush()
 	graph->Clear(BkColor);
 	CString str = L"图案啊";
 	Gdiplus::Font font(L"隶书", 100);
+	//图案画刷
 	HatchBrush Brush1(HatchStyleForwardDiagonal, Color::Yellow, Color::Brown); 
 	graph->DrawString(str, str.GetLength(), &font, PointF(0, 0), &Brush1);
-	HatchBrush Brush2(HatchStyleSmallCheckerBoard, Color::Red, Color::Yellow);
 
+	HatchBrush Brush2(HatchStyleSmallCheckerBoard, Color::Red, Color::Yellow);
 	graph->DrawString(str, str.GetLength(), &font, PointF(0, 130), &Brush2);
 }
 
@@ -434,7 +435,8 @@ void CGraffitiGdiPluaaaasDlg::OnTextureBrush()
 	// TODO: 在此添加命令处理程序代码
 	graph->Clear(BkColor);
 	CString str = L"纹理啊";
-	Gdiplus::Font font(L"隶书", 100);
+	Gdiplus::Font font(L"仿宋", 100);
+	//图像画刷
 	CString filename = TEXT("红楼.png");
 	Image img(filename);//项目文件夹里面的图像文件
 	WrapMode Mode = WrapModeTile;	//枚举常量：平铺
@@ -450,10 +452,13 @@ void CGraffitiGdiPluaaaasDlg::OnLinerGradientBrush()
 	graph->Clear(BkColor);
 	CString str = L"渐变咯";
 	Gdiplus::Font font(L"仿宋", 70);
+
 	Point p1(20, 0), p2(picClient_W - 20, 0);//两点y=0
 	Color col1(Color::Red), col2(Color::Yellow);//渐变点颜色
 	LinearGradientBrush myBrush(p1, p2, col1, col2);//p1(red)->p2(yellow)
+
 	graph->DrawString(str, str.GetLength(), &font, PointF(0, 0), &myBrush);
+
 	//多点渐变------------------------------------
 	Color cols[8] =
 	{
@@ -466,6 +471,7 @@ void CGraffitiGdiPluaaaasDlg::OnLinerGradientBrush()
 	REAL bps[8] = { 0.0,0.15,0.3,0.45,0.6,0.75,0.875,1.0 };//渐变点
 		// bps∶混色位置百分比，首尾须为O和1[中间值递增]
 	myBrush.SetInterpolationColors(cols, bps, 8);//绑定渐变点颜色
+
 	graph->DrawString(str, str.GetLength(), &font, PointF(0, 120), &myBrush);
 
 }
@@ -474,7 +480,8 @@ void CGraffitiGdiPluaaaasDlg::OnLinerGradientBrush()
 void CGraffitiGdiPluaaaasDlg::OnTuanslateTransform()
 {
 	// TODO: 在此添加命令处理程序代码
-	//GDI+∶坐标系变换（图形本身大小、位置等不变），后同graph->Clear(ColorWhite);
+	//GDI+∶坐标系变换（图形本身大小、位置等不变），后同
+	graph->Clear(Color::White);
 	Rect rectSquare(40, 30, 100, 100);//绘制矩形
 	Rect rectCircle(220, 30, 100, 100);//圆的外接矩形绘圆和椭圆
 	Pen BluePen(Color::Blue,2);
